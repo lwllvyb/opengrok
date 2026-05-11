@@ -10,6 +10,10 @@
 # These are set via https://github.com/oracle/opengrok/settings/secrets
 #
 
+#
+# Copyright (c) 2019, 2026, Oracle and/or its affiliates. All rights reserved.
+#
+
 set -e
 
 echo "Running linter"
@@ -69,6 +73,11 @@ fi
 # The push only works on the main repository.
 if [[ "$OPENGROK_REPO_SLUG" != "oracle/opengrok" ]]; then
 	echo "Not pushing Docker image for non main repository"
+	exit 0
+fi
+
+if [[ "$OPENGROK_REF" != "refs/heads/master" && "$OPENGROK_REF" != refs/tags/* ]]; then
+	echo "Not pushing Docker image for ref $OPENGROK_REF"
 	exit 0
 fi
 
